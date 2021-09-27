@@ -1,12 +1,15 @@
-<p align="right">En | <a href="./doc/README-zh_cn.md">中文</a>
+<p align="right">En | <a href="./doc/README-zh_cn.md">中文</a></p>
 <div align="center">
-<h1>nmgp</h1>
+
+### nmgp
+
 Easily use mitmproxy global http proxy on your macOS with nmgp
+
 [![GitHub release](https://img.shields.io/github/v/release/newtorn/nmgp)](https://github.com/newtorn/nmgp/releases)
 [![Github repository](https://img.shields.io/appveyor/build/newtorn/https://github.com/newtorn/nmgp.git)](https://github.com/newtorn/nmgp.git)
 [![Github license](https://img.shields.io/github/license/newtorn/nmgp.git)](LICENSE)
+
 </div>
-</p>
 
 ## About
 
