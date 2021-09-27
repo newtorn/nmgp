@@ -35,23 +35,25 @@ YesOrNo(){
 }
 
 SetupCa(){
-    if command -v mitmproxy &> /dev/null; then
-        echo "Start to setup mitmproxy CA certification"
-        sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain ~/.mitmproxy/mitmproxy-ca-cert.pem
-        echo "Done"
-        return
+    if !command -v mitmproxy &> /dev/null; then
+        if YesOrNo "Start to install mitmproxy command"; then
+            brew install mitmproxy
+            echo "Done"
+        else
+            exit
+        fi
     fi
-    if YesOrNo "Start to install mitmproxy command"; then
-        brew install mitmproxy
-        echo "Done"
-        return
-    fi
-    exit
+    echo "Start to setup mitmproxy CA certification"
+    sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain ~/.mitmproxy/mitmproxy-ca-cert.pem
+    echo "Done"
 }
 
 SetConf(){
     echo "PROXY_HOST=$1" > $CONF_FILE
     echo "PROXY_PORT=$2" >> $CONF_FILE
+    . $CONF_FILE
+    networksetup -setwebproxy wi-fi $PROXY_HOST $PROXY_PORT
+    networksetup -setsecurewebproxy wi-fi $PROXY_HOST $PROXY_PORT
 }
 
 GetConf(){
@@ -66,13 +68,8 @@ SetProxy(){
 SetProxyOn(){
     echo "Set global proxy on"
     GetConf
-    networksetup -setwebproxy wi-fi $PROXY_HOST $PROXY_PORT
-    networksetup -setsecurewebproxy wi-fi $PROXY_HOST $PROXY_PORT
     networksetup -setwebproxystate wi-fi on
     networksetup -setsecurewebproxystate wi-fi on
-    export http_proxy=http://$PROXY_HOST:$PROXY_PORT
-    export https_proxy=http://$PROXY_HOST:$PROXY_PORT
-    echo "PROXY_HOST=$PROXY_HOST PROXY_PORT=$PROXY_PORT"
     echo "Done"
 }
 
@@ -86,6 +83,11 @@ SetProxyOff(){
 }
 
 NmgpCMD(){
+    GetConf
+    export http_proxy=http://$PROXY_HOST:$PROXY_PORT
+    export https_proxy=http://$PROXY_HOST:$PROXY_PORT
+    echo "PROXY_HOST=$PROXY_HOST PROXY_PORT=$PROXY_PORT"
+    ($*)
     return
 }
 
