@@ -1,4 +1,4 @@
-<p align="right">En | <a href="../README.md">En</a></p>
+<p align="right">En | <a href="../README.md">中文</a></p>
 <div align="center">
 
 ### nmgp
@@ -9,6 +9,7 @@
 [![Github repository](https://img.shields.io/appveyor/build/newtorn/https://github.com/newtorn/nmgp.git)](https://github.com/newtorn/nmgp.git)
 [![Github license](https://img.shields.io/github/license/newtorn/nmgp.git)](LICENSE)
 
+===
 </div>
 
 
