@@ -6,7 +6,7 @@
 轻松地通过nmgp在macOS上使用http全局代理，并且使用mitmproxy来监听这些请求。
 
 [![GitHub release](https://img.shields.io/github/v/release/newtorn/nmgp)](https://github.com/newtorn/nmgp/releases)
-[![Github license](https://img.shields.io/github/license/newtorn/nmgp.git)](LICENSE)
+[![Github license](https://img.shields.io/github/license/newtorn/nmgp)](LICENSE)
 ===
 </div>
 

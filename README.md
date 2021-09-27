@@ -6,7 +6,7 @@
 Easily use mitmproxy global http proxy on your macOS with nmgp
 
 [![GitHub release](https://img.shields.io/github/v/release/newtorn/nmgp)](https://github.com/newtorn/nmgp/releases)
-[![Github license](https://img.shields.io/github/license/newtorn/nmgp.git)](LICENSE)
+[![Github license](https://img.shields.io/github/license/newtorn/nmgp)](LICENSE)
 ===
 </div>
 
