@@ -35,7 +35,7 @@ YesOrNo(){
 }
 
 SetupCa(){
-    if !command -v mitmproxy &> /dev/null; then
+    if ! command -v mitmproxy &> /dev/null; then
         if YesOrNo "Start to install mitmproxy command"; then
             brew install mitmproxy
             echo "Done"
