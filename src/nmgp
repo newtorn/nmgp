@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+CONF_FILE=$HOME/.nmgp
+
+Usage(){
+    echo "
+    Example usage:
+        nmgp help
+        nmgp set
+        nmgp on
+        nmgp off
+    Further help:
+        nmgp commands
+        nmgp help [COMMAND]
+        man nmgp
+    "
+}
+
+YesOrNo(){
+    read -p "$1[Y/N]? " yn
+    while true; do
+        case $yn in
+            [Yy]|[Yy][Ee][Ss] )
+                return 0
+                ;;
+            [Nn]|[Nn][Oo] )
+                return 1
+                ;;
+            * )
+                echo -n "Please type yes or no: "
+                read yn
+                ;;
+        esac
+    done
+}
+
+SetupCa(){
+    if command -v mitmproxy &> /dev/null; then
+        echo "Start to setup mitmproxy CA certification"
+        sudo security add-trusted-cert -d -p ssl -p basic -k /Library/Keychains/System.keychain ~/.mitmproxy/mitmproxy-ca-cert.pem
+        echo "Done"
+        return
+    fi
+    if YesOrNo "Start to install mitmproxy command"; then
+        brew install mitmproxy
+        echo "Done"
+        return
+    fi
+    exit
+}
+
+SetConf(){
+    echo "PROXY_HOST=$1" > $CONF_FILE
+    echo "PROXY_PORT=$2" >> $CONF_FILE
+}
+
+GetConf(){
+    . $CONF_FILE
+}
+
+SetProxy(){
+    SetupCa
+    SetConf $2 $3
+}
+
+SetProxyOn(){
+    echo "Set global proxy on"
+    GetConf
+    networksetup -setwebproxy wi-fi $PROXY_HOST $PROXY_PORT
+    networksetup -setsecurewebproxy wi-fi $PROXY_HOST $PROXY_PORT
+    networksetup -setwebproxystate wi-fi on
+    networksetup -setsecurewebproxystate wi-fi on
+    export http_proxy=http://$PROXY_HOST:$PROXY_PORT
+    export https_proxy=http://$PROXY_HOST:$PROXY_PORT
+    echo "PROXY_HOST=$PROXY_HOST PROXY_PORT=$PROXY_PORT"
+    echo "Done"
+}
+
+SetProxyOff(){
+    echo "Set global proxy off"
+    networksetup -setwebproxystate wi-fi off
+    networksetup -setsecurewebproxystate wi-fi off
+    unset http_proxy
+    unset https_proxy
+    echo "Done"
+}
+
+NmgpCMD(){
+    return
+}
+
+# START MAIN-OPTIONS
+case $1 in
+    help) Usage ;;
+    set) SetProxy $* ;;
+    on) SetProxyOn ;;
+    off) SetProxyOff ;;
+    *) NmgpCMD $* ;;
+esac
+# END MAIN-OPTIONS
+
